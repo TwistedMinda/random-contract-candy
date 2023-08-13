@@ -29,12 +29,8 @@ describe("Lock", function () {
       lock.once(
         'ReceivedNumber',
         async (id, res) => {
-          try {
-            console.log('result', id, res)
-            resolve(true)
-          } catch (e) {
-            reject(e)
-          }
+          console.log('result', id, res)
+          resolve(true)
         }
       )
     })
