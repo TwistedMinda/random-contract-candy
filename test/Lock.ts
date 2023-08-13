@@ -4,7 +4,7 @@ import {
 import { expect } from "chai";
 import { ethers } from "hardhat";
 import { HardhatEthersSigner } from "@nomicfoundation/hardhat-ethers/signers";
-import { deployConsumer } from "../artifacts/contracts/src/tools";
+import { deployCandy, deployConsumer } from "../artifacts/contracts/src/tools";
 
 describe("Lock", function () {
   let rollId: number = 0
@@ -14,8 +14,15 @@ describe("Lock", function () {
     return true;
   };
 
+  let candyAddress: string | undefined = undefined
+
+  it("Deploy randomizer", async function () {
+    const randomizer = await deployCandy('sepolia');
+    candyAddress = await randomizer.getAddress()
+  });
+
   it("Generate number", async function () {
-    const lock = await deployConsumer('sepolia')
+    const lock = await deployConsumer('sepolia', candyAddress)
     
     const tx = await lock.requestNumber()
     await expect(tx.wait())

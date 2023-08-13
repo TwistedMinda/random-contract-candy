@@ -1,5 +1,4 @@
 import { ethers } from "hardhat";
-import { addCandyConsumer, createCandyContract } from "../contracts/src/v0.8/getter";
 import { deployCandy } from "../artifacts/contracts/src/tools";
 
 async function main() {

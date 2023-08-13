@@ -14,10 +14,10 @@ const create = (address: string, owner: HardhatEthersSigner) =>
     owner
 ) as unknown as RandomContractCandy;
 
-export const getCandyContract = (type: ConfigKey, owner: HardhatEthersSigner) =>
-  create(configs[type]?.candy?.address ?? '', owner)
+export const getCandyContract = (type: ConfigKey, owner: HardhatEthersSigner, address?: string) =>
+  create(address ?? configs[type]?.candy?.address ?? '', owner)
 
-export const createCandyContract = async (type: ConfigKey, owner: HardhatEthersSigner) => {
+export const createCandyContract = async (type: ConfigKey) => {
   const config = configs[type]
   const Randomizer = await ethers.getContractFactory("RandomContractCandy");
   return await Randomizer.deploy(

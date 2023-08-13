@@ -19,6 +19,7 @@ contract Lock is Receiver {
   }
 
   function receivedNumber(uint _resultId, uint _number) public {
-    emit ReceivedNumber(_resultId, _number);
+    uint dice = (_number % 6) + 1; // Reduce as dice value (1 to 6)
+    emit ReceivedNumber(_resultId, dice);
   }
 }
