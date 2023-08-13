@@ -4,13 +4,6 @@ import { HardhatEthersSigner } from "@nomicfoundation/hardhat-ethers/signers";
 import { addCandyConsumer, createCandyContract } from "../contracts/src/v0.8/getter";
 import { deployCandy } from "../artifacts/contracts/src/tools";
 
-const network = 'sepolia'
-
-const request = (lock: any, account: HardhatEthersSigner) =>
-  lock.connect(account).requestNumber({
-    from: account.address,
-  });
-
 describe("Randomizer", function () {
   return;
   let rollId: number = 0
@@ -22,9 +15,9 @@ describe("Randomizer", function () {
   
   it("Deploy randomizer", async function () {
     const [owner] = await ethers.getSigners()
-    const randomizer = await deployCandy(network);
+    const randomizer = await deployCandy('sepolia');
 
-    const txSend = await request(randomizer, owner)
+    const txSend = await randomizer.requestNumber()
     await expect(txSend.wait())
       .to.emit(randomizer, "RequestStarted")
       .withArgs(captureRollId)

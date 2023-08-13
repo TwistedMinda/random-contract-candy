@@ -6,11 +6,6 @@ import { ethers } from "hardhat";
 import { HardhatEthersSigner } from "@nomicfoundation/hardhat-ethers/signers";
 import { deployConsumer } from "../artifacts/contracts/src/tools";
 
-const request = (lock: any, account: HardhatEthersSigner) =>
-  lock.connect(account).requestNumber({
-    from: account.address,
-  })
-
 describe("Lock", function () {
   let rollId: number = 0
   const captureRollId = (value: any) => {
@@ -25,9 +20,7 @@ describe("Lock", function () {
 
     const lock = await deployConsumer(network)
     
-    const tx = await lock.requestNumber({
-      from: owner.address,
-    })
+    const tx = await lock.requestNumber()
     await expect(tx.wait())
       .to.emit(lock, "RequestedNumber")
       .withArgs(captureRollId)
