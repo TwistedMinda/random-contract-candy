@@ -10,6 +10,7 @@ interface Receiver {
 }
 */
 import "hardhat/console.sol";
+import "@chainlink/contracts/src/v0.8/mocks/VRFCoordinatorV2Mock.sol";
 
 abstract contract RandomContractCandy is VRFConsumerBaseV2, ConfirmedOwner {
   VRFCoordinatorV2Interface coordinator;
@@ -44,7 +45,7 @@ abstract contract RandomContractCandy is VRFConsumerBaseV2, ConfirmedOwner {
       callbackGasLimit,
       numWords
     );
-    emit RequestStarted(10);
+    emit RequestStarted(requestId);
     return requestId;
   }
 
@@ -67,15 +68,6 @@ contract SepoliaRandomContractCandy is RandomContractCandy {
     _password
   ) {}
 
-  function fulfillRandomWords(
-    uint256 _requestId,
-    uint256[] memory _randomWords
-  ) virtual internal override {
-    emit RequestEnded(_requestId, _randomWords[0]);
-    //Receiver receiver = Receiver(receivers[requestId]);
-    //receiver.receivedNumber(requestId, _randomWords[0]);
-  }
-
 }
 
 contract FantomRandomContractCandy is RandomContractCandy {
@@ -86,14 +78,5 @@ contract FantomRandomContractCandy is RandomContractCandy {
     0x121a143066e0f2f08b620784af77cccb35c6242460b4a8ee251b4b416abaebd4,
     _password
   ) {}
-
-  function fulfillRandomWords(
-    uint256 _requestId,
-    uint256[] memory _randomWords
-  ) virtual internal override {
-    emit RequestEnded(_requestId, _randomWords[0]);
-    //Receiver receiver = Receiver(receivers[requestId]);
-    //receiver.receivedNumber(requestId, _randomWords[0]);
-  }
 
 }

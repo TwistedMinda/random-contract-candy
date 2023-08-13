@@ -12,8 +12,8 @@ contract Lock is SepoliaRandomContractCandy {
         uint _requestId,
         uint256[] memory _randomWords
     ) virtual internal override {
-        emit RequestEnded(_requestId, _randomWords[0]);
         uint res = (_randomWords[0] % 6) + 1;
         console.log("receivedNumber", _requestId, res);
+        emit RequestEnded(_requestId, res);
     }
 }

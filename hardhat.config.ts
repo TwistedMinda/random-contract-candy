@@ -9,9 +9,12 @@ const config: HardhatUserConfig = {
     sepolia: {
       url: process.env.RPC_URL ?? '',
       chainId: 11155111,
-      accounts: [process.env.PRIVATE_KEY ?? '']
+      accounts: [process.env.PRIVATE_KEY ?? ''],
     }
-  }
+  },
+  mocha: {
+    timeout: 100000000
+  },
 };
 
 export default config;
