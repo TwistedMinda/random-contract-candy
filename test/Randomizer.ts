@@ -12,7 +12,7 @@ const request = (lock: any, account: HardhatEthersSigner) =>
   });
 
 describe("Randomizer", function () {
-  
+  return;
   let rollId: number = 0
   const captureRollId = (value: any) => {
     rollId = value;

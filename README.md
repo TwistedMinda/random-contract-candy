@@ -72,15 +72,19 @@ async function main () {
 ```ts
 it("Generate number", async function () {
   const [owner] = await ethers.getSigners()
-  const lock = await deployContract()
+  const contract = await deployContract()
   
-  const txSend = await request(lock, owner)
-  await expect(txSend.wait())
-    .to.emit(lock, "RequestedNumber")
-    .withArgs(captureRollId)
-  
+  const tx = await contract.requestNumber({
+    from: owner.address
+  })
+
+  // Verify "RequestedNumber" was emitted
+  await expect(tx.wait())
+    .to.emit(contract, "RequestedNumber")
+
+  // Wait for "ReceivedNumber" to be emitted
   await new Promise(async (resolve, reject) => {
-    lock.once(
+    contract.once(
       'ReceivedNumber',
       async (id, res) => {
         try {

@@ -20,13 +20,15 @@ describe("Lock", function () {
   };
 
   it("Generate number", async function () {
-    const [owner, otherAccount] = await ethers.getSigners()
+    const [owner] = await ethers.getSigners()
     const network = 'sepolia'
 
     const lock = await deployConsumer(network)
     
-    const txSend = await request(lock, owner)
-    await expect(txSend.wait())
+    const tx = await lock.requestNumber({
+      from: owner.address,
+    })
+    await expect(tx.wait())
       .to.emit(lock, "RequestedNumber")
       .withArgs(captureRollId)
     
