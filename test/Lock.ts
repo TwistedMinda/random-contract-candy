@@ -2,7 +2,7 @@ import {
   loadFixture,
 } from "@nomicfoundation/hardhat-toolbox/network-helpers" 
 import { expect } from "chai";
-import { ethers } from "hardhat";
+import { ethers, network } from "hardhat";
 import { HardhatEthersSigner } from "@nomicfoundation/hardhat-ethers/signers";
 import { deployCandy, deployConsumer } from "../artifacts/contracts/src/tools";
 
@@ -18,6 +18,7 @@ describe("Lock", function () {
 
   it("Deploy randomizer", async function () {
     const randomizer = await deployCandy('sepolia');
+
     candyAddress = await randomizer.getAddress()
   });
 
