@@ -49,15 +49,48 @@ contract Lock is Receiver {
 Supported networks: `sepolia`
 
 ```ts
-async function main () {
+const deployContract = async () => {
   const [owner] = await ethers.getSigners()
 
   // Retrieve existing Randomizer
   const randomizer = getCandyContract('sepolia', owner)
 
-  // Your contract
+  // Deploy your contract
   const Contract = await ethers.getContractFactory("Contract")
   const contract = await Contract.deploy(randomizer)
   await contract.waitForDeployment()
+  return contract
 }
+
+async function main () {
+  await deployContract()
+}
+```
+
+### Test your contract
+
+```ts
+it("Generate number", async function () {
+  const [owner] = await ethers.getSigners()
+  const lock = await deployContract()
+  
+  const txSend = await request(lock, owner)
+  await expect(txSend.wait())
+    .to.emit(lock, "RequestedNumber")
+    .withArgs(captureRollId)
+  
+  await new Promise(async (resolve, reject) => {
+    lock.once(
+      'ReceivedNumber',
+      async (id, res) => {
+        try {
+          console.log('result', id, res)
+          resolve(true)
+        } catch (e) {
+          reject(e)
+        }
+      }
+    )
+  })
+})
 ```
