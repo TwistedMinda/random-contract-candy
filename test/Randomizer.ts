@@ -1,47 +1,46 @@
-import {
-  loadFixture,
-} from "@nomicfoundation/hardhat-toolbox/network-helpers" 
 import { expect } from "chai";
 import { ethers } from "hardhat";
 import { HardhatEthersSigner } from "@nomicfoundation/hardhat-ethers/signers";
-import { deployConsumer } from "../artifacts/contracts/src/tools";
+import { addCandyConsumer, createCandyContract } from "../contracts/src/v0.8/getter";
+import { deployCandy } from "../artifacts/contracts/src/tools";
+
+const network = 'sepolia'
 
 const request = (lock: any, account: HardhatEthersSigner) =>
   lock.connect(account).requestNumber({
     from: account.address,
-  })
+  });
 
-describe("Lock", function () {
+describe("Randomizer", function () {
+  
   let rollId: number = 0
   const captureRollId = (value: any) => {
     rollId = value;
     console.log('found Roll', rollId)
     return true;
   };
+  
+  it("Deploy randomizer", async function () {
+    const [owner] = await ethers.getSigners()
+    const randomizer = await deployCandy(network);
 
-  it("Generate number", async function () {
-    const [owner, otherAccount] = await ethers.getSigners()
-    const network = 'sepolia'
-
-    const lock = await deployConsumer(network)
-    
-    const txSend = await request(lock, owner)
+    const txSend = await request(randomizer, owner)
     await expect(txSend.wait())
-      .to.emit(lock, "RequestedNumber")
+      .to.emit(randomizer, "RequestStarted")
       .withArgs(captureRollId)
-    
+
     await new Promise(async (resolve, reject) => {
-      lock.once(
-        'ReceivedNumber',
+      randomizer.once(
+        'RequestEnded',
         async (id, res) => {
           try {
             console.log('result', id, res)
-            resolve(true)
+            resolve(true);
           } catch (e) {
-            reject(e)
+            reject(e);
           }
         }
-      )
-    })
-  })
-})
+      );
+    });
+  });
+});

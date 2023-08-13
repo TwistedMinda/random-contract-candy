@@ -9,7 +9,7 @@ interface Receiver {
 	function receivedNumber(uint _resultId, uint _number) external;
 }
 
-abstract contract RandomContractCandy is VRFConsumerBaseV2, ConfirmedOwner {
+contract RandomContractCandy is VRFConsumerBaseV2, ConfirmedOwner {
   VRFCoordinatorV2Interface coordinator;
   uint32 public callbackGasLimit = 100000;
   uint16 requestConfirmations = 3;
@@ -55,26 +55,4 @@ abstract contract RandomContractCandy is VRFConsumerBaseV2, ConfirmedOwner {
     Receiver receiver = Receiver(receivers[_requestId]);
     receiver.receivedNumber(_requestId, _randomWords[0]);
   }
-}
-
-contract SepoliaRandomContractCandy is RandomContractCandy {
-
-  constructor (string memory _password) RandomContractCandy(
-    4472,
-    0x8103B0A8A00be2DDC778e6e7eaa21791Cd364625,
-    0x474e34a077df58807dbe9c96d3c009b23b3c6d0cce433e59bbf5b34f823bc56c,
-    _password
-  ) {}
-
-}
-
-contract FantomRandomContractCandy is RandomContractCandy {
-
-  constructor (string memory _password) RandomContractCandy(
-    141,
-    0x5FbDB2315678afecb367f032d93F642f64180aa3,
-    0x121a143066e0f2f08b620784af77cccb35c6242460b4a8ee251b4b416abaebd4,
-    _password
-  ) {}
-
 }

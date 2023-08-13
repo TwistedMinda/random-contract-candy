@@ -7,9 +7,9 @@ import "hardhat/console.sol";
 contract Lock is Receiver {
     event RequestedNumber(uint _resultId);
     event ReceivedNumber(uint _resultId, uint _number);
-    SepoliaRandomContractCandy randomizer;
+    RandomContractCandy randomizer;
 
-    constructor(SepoliaRandomContractCandy _randomizer) {
+    constructor(RandomContractCandy _randomizer) {
         randomizer = _randomizer;
     }
 

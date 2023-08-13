@@ -23,17 +23,9 @@ This projects breaks it down to 2 steps:
 ```solidity
 import "@twisted/random-contract-candy/contracts/RandomContractCandy.sol"
 
-import MyRandomContract is RandomContractCandy {
+import MyConsumer is Receiver {
 
-  constructor(String password) {
-    this.setPassword(password);
-  }
-
-  requestNumber(int min, int max) {
-    this.requestNumber(min, max);
-  }
-
-  requestRandomNumber(int min, int max) {
+  requestNumber(int _min_, int max) {
     this.requestNumber(min, max);
   }
 
@@ -48,7 +40,7 @@ import MyRandomContract is RandomContractCandy {
 
 ```ts
 task('deploy', 'Deployment', () => {
-  MyRandomContract('PasswordYouHadChosen')
+  const = new MyConsumer('PasswordYouHadChosen')
 })
 ```
 
