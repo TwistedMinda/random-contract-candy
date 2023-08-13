@@ -4,13 +4,10 @@ pragma solidity ^0.8.19;
 import "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol";
 import "@chainlink/contracts/src/v0.8/ConfirmedOwner.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";
-/*
+
 interface Receiver {
 	function receivedNumber(uint _resultId, uint _number) public {}
 }
-*/
-import "hardhat/console.sol";
-import "@chainlink/contracts/src/v0.8/mocks/VRFCoordinatorV2Mock.sol";
 
 abstract contract RandomContractCandy is VRFConsumerBaseV2, ConfirmedOwner {
   VRFCoordinatorV2Interface coordinator;
@@ -54,8 +51,8 @@ abstract contract RandomContractCandy is VRFConsumerBaseV2, ConfirmedOwner {
     uint256[] memory _randomWords
   ) virtual internal override {
     emit RequestEnded(_requestId, _randomWords[0]);
-    //Receiver receiver = Receiver(receivers[requestId]);
-    //receiver.receivedNumber(requestId, _randomWords[0]);
+    //Receiver receiver = Receiver(receivers[_requestId]);
+    //receiver.receivedNumber(_requestId, _randomWords[0]);
   }
 }
 
