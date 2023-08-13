@@ -14,7 +14,7 @@ describe("Lock", function () {
     return true;
   };
 
-  let candyAddress: string | undefined = undefined
+  let candyAddress = ''
 
   it("Deploy randomizer", async function () {
     const randomizer = await deployCandy('sepolia');
@@ -22,7 +22,7 @@ describe("Lock", function () {
   });
 
   it("Generate number", async function () {
-    const lock = await deployConsumer('sepolia', candyAddress)
+    const lock = await deployConsumer(candyAddress)
     
     const tx = await lock.requestNumber()
     await expect(tx.wait())
