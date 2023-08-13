@@ -1,9 +1,9 @@
-# Introduction
+### Introduction
 
 We've been there, we need to prototype some project for fun, and there we go, we need to setup a Chainlink VRF oracle.
 This projects breaks it down to 2 steps:
 
-## Setup Pedeployed Oracle
+# Step 1: Feed the Shared Oracle
 
 - Get LINK tokens in your wallet (https://faucets.chain.link/)
 - Go to : https://random-contract-candy.io
@@ -12,7 +12,7 @@ This projects breaks it down to 2 steps:
   - Choose the network (Sepolia, Mumbai...)
   - Send LINK tokens (20 is usually enough)
 
-## Implement the contract
+# Step 2: Implement the candy contract
 
 ### Install the contract
 
