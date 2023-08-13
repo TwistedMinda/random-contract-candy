@@ -37,15 +37,16 @@ abstract contract RandomContractCandy is VRFConsumerBaseV2, ConfirmedOwner {
 	}
 
 	function requestNumber() public returns (uint) {
-		uint requestId = coordinator.requestRandomWords(
-      keyHash,
-      subId,
-      requestConfirmations,
-      callbackGasLimit,
-      numWords
-    );
-    emit RequestStarted(requestId);
-    return requestId;
+		// uint requestId = coordinator.requestRandomWords(
+    //   keyHash,
+    //   subId,
+    //   requestConfirmations,
+    //   callbackGasLimit,
+    //   numWords
+    // );
+    emit RequestStarted(10);
+    // return requestId;
+    return 10;
   }
 
   function fulfillRandomWords(

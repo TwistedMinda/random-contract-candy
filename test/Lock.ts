@@ -44,28 +44,29 @@ describe("Lock", function () {
   describe("Deployment", function () {
     it("Should generate numbers", async function () {
       const { lock, owner } = await deploy();
-      const addr = await lock.getAddress()
 
-      await lock.connect(owner).requestNumber()
-      /*
-      await new Promise((resolve, reject) => {
-        lock.once(
-          'RequestEnded',
-          (_id: number, res: number) => {
-            console.log('_id', _id, res)
-            try {
-              resolve(true);
-            } catch (e) {
-              reject(e);
-            }
-          }
-        );
-        console.log('requesting number')
-        expect(lock.connect(owner).requestNumber())
-          .to.emit(lock, 'RequestStarted')
-          .withArgs(captureRollId);
-      });
-      */
+      await expect(await lock.requestNumber())
+        .to.emit(lock, 'RequestStarted')
+        .withArgs(captureRollId);
+      
+      //await lock.connect(owner).requestNumber()
+      // await new Promise((resolve, reject) => {
+      //   lock.once(
+      //     'RequestEnded',
+      //     (_id: number, res: number) => {
+      //       console.log('_id', _id, res)
+      //       try {
+      //         resolve(true);
+      //       } catch (e) {
+      //         reject(e);
+      //       }
+      //     }
+      //   );
+      //   console.log('requesting number')
+      //   expect(lock.connect(owner).requestNumber())
+      //     .to.emit(lock, 'RequestStarted')
+      //     .withArgs(captureRollId);
+      // });
     });
   });
 });
