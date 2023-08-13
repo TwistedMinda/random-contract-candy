@@ -5,11 +5,11 @@ import "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol";
 import "@chainlink/contracts/src/v0.8/ConfirmedOwner.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";
 
-interface Receiver {
+interface RandomCandyInterface {
 	function receivedNumber(uint _resultId, uint _number) external;
 }
 
-contract RandomContractCandy is VRFConsumerBaseV2, ConfirmedOwner {
+contract RandomCandyContract is VRFConsumerBaseV2, ConfirmedOwner {
   VRFCoordinatorV2Interface coordinator;
   uint32 public callbackGasLimit = 100000;
   uint16 requestConfirmations = 3;
@@ -56,7 +56,7 @@ contract RandomContractCandy is VRFConsumerBaseV2, ConfirmedOwner {
     uint256[] memory _randomWords
   ) virtual internal override {
     emit RequestEnded(_requestId, _randomWords[0]);
-    Receiver receiver = Receiver(receivers[_requestId]);
+    RandomCandyInterface receiver = RandomCandyInterface(receivers[_requestId]);
     receiver.receivedNumber(_requestId, _randomWords[0]);
   }
 }

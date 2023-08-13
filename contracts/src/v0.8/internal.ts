@@ -4,7 +4,7 @@ import { ethers } from "hardhat";
 
 import VRF_COORDINATOR_ABI from '@chainlink/contracts/abi/v0.8/VRFCoordinatorV2.json';
 import configs, { ConfigKey } from './config'
-import { RandomContractCandy } from "../../../typechain-types";
+import { RandomCandyContract } from "../../../typechain-types";
 
 const ABI: any = VRF_COORDINATOR_ABI
 export const getCandy = (address: string, owner: HardhatEthersSigner) => 
@@ -12,11 +12,11 @@ export const getCandy = (address: string, owner: HardhatEthersSigner) =>
     address,
     ABI,
     owner
-) as unknown as RandomContractCandy
+) as unknown as RandomCandyContract
 
 export const createCandy = async (type: ConfigKey) => {
   const config = configs[type]
-  const Randomizer = await ethers.getContractFactory("RandomContractCandy");
+  const Randomizer = await ethers.getContractFactory("RandomCandyContract");
   return await Randomizer.deploy(
     config.candy.subscriptionId,
     config.chainlink.vrfCoordinator,

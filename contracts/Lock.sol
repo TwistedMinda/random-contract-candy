@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.19;
 
-import "./src/v0.8/RandomContractCandy.sol";
+import "./src/v0.8/RandomCandyContract.sol";
 
-contract Lock is Receiver {
+contract Lock is RandomCandyInterface {
   event RequestedNumber(uint _resultId);
   event ReceivedNumber(uint _resultId, uint _number);
-  RandomContractCandy randomizer;
+  RandomCandyContract randomizer;
 
-  constructor(RandomContractCandy _randomizer) {
+  constructor(RandomCandyContract _randomizer) {
     randomizer = _randomizer;
   }
 

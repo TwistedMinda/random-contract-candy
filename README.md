@@ -21,14 +21,14 @@ This projects breaks it down to 2 steps:
 ### Use the candy in your contracts
 
 ```solidity
-import "@twisted/random-contract-candy/src/v0.8/RandomContractCandy.sol";
+import "@twisted/random-contract-candy/src/v0.8/RandomCandyContract.sol";
 
 contract Lock is Receiver {
   event RequestedNumber(uint _resultId);
   event ReceivedNumber(uint _resultId, uint _number);
-  RandomContractCandy randomizer;
+  RandomCandyContract randomizer;
 
-  constructor(RandomContractCandy _randomizer) {
+  constructor(RandomCandyContract _randomizer) {
     randomizer = _randomizer;
   }
 
