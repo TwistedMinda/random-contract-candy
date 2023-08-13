@@ -74,9 +74,8 @@ it("Generate number", async function () {
   const [owner] = await ethers.getSigners()
   const contract = await deployContract()
   
-  const tx = await contract.requestNumber({
-    from: owner.address
-  })
+  // Request a random number
+  const tx = await contract.requestNumber()
 
   // Verify "RequestedNumber" was emitted
   await expect(tx.wait())
