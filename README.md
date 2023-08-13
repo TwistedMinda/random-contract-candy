@@ -23,7 +23,7 @@ This projects breaks it down to 2 steps:
 ```solidity
 import "@twisted/random-contract-candy/src/v0.8/RandomCandyContract.sol";
 
-contract Lock is Receiver {
+contract Lock is RandomCandyInterface {
   event RequestedNumber(uint _resultId);
   event ReceivedNumber(uint _resultId, uint _number);
   RandomCandyContract randomizer;
