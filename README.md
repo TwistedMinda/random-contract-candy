@@ -49,6 +49,8 @@ contract Lock is Receiver {
 Supported networks: `sepolia`
 
 ```ts
+import { getCandyContract } from '@twisted/random-contract-candy/src/v0.8/getter'
+
 const deployContract = async () => {
   const [owner] = await ethers.getSigners()
 
