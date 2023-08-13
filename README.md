@@ -71,7 +71,6 @@ async function main () {
 
 ```ts
 it("Generate number", async function () {
-  const [owner] = await ethers.getSigners()
   const contract = await deployContract()
   
   // Request a random number

@@ -15,10 +15,7 @@ describe("Lock", function () {
   };
 
   it("Generate number", async function () {
-    const [owner] = await ethers.getSigners()
-    const network = 'sepolia'
-
-    const lock = await deployConsumer(network)
+    const lock = await deployConsumer('sepolia')
     
     const tx = await lock.requestNumber()
     await expect(tx.wait())

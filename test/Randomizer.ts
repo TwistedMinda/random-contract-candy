@@ -14,7 +14,6 @@ describe("Randomizer", function () {
   };
   
   it("Deploy randomizer", async function () {
-    const [owner] = await ethers.getSigners()
     const randomizer = await deployCandy('sepolia');
 
     const txSend = await randomizer.requestNumber()
