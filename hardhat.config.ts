@@ -9,8 +9,6 @@ const config: HardhatUserConfig = {
     sepolia: {
       url: process.env.RPC_URL ?? '',
       chainId: 11155111,
-      gas: 2100000,
-      gasPrice: 8000000000,
       accounts: [process.env.PRIVATE_KEY ?? '']
     }
   }

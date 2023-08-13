@@ -13,8 +13,8 @@ import "hardhat/console.sol";
 
 abstract contract RandomContractCandy is VRFConsumerBaseV2, ConfirmedOwner {
   VRFCoordinatorV2Interface coordinator;
-  uint32 callbackGasLimit = 2500000;
-  uint16 requestConfirmations = 1;
+  uint32 public callbackGasLimit = 100000;
+  uint16 requestConfirmations = 3;
   uint32 numWords = 1;
 	uint64 subId;
 	bytes32 keyHash;
@@ -37,16 +37,15 @@ abstract contract RandomContractCandy is VRFConsumerBaseV2, ConfirmedOwner {
 	}
 
 	function requestNumber() public returns (uint) {
-		// uint requestId = coordinator.requestRandomWords(
-    //   keyHash,
-    //   subId,
-    //   requestConfirmations,
-    //   callbackGasLimit,
-    //   numWords
-    // );
+		uint requestId = coordinator.requestRandomWords(
+      keyHash,
+      subId,
+      requestConfirmations,
+      callbackGasLimit,
+      numWords
+    );
     emit RequestStarted(10);
-    // return requestId;
-    return 10;
+    return requestId;
   }
 
   function fulfillRandomWords(
@@ -68,6 +67,15 @@ contract SepoliaRandomContractCandy is RandomContractCandy {
     _password
   ) {}
 
+  function fulfillRandomWords(
+    uint256 _requestId,
+    uint256[] memory _randomWords
+  ) virtual internal override {
+    emit RequestEnded(_requestId, _randomWords[0]);
+    //Receiver receiver = Receiver(receivers[requestId]);
+    //receiver.receivedNumber(requestId, _randomWords[0]);
+  }
+
 }
 
 contract FantomRandomContractCandy is RandomContractCandy {
@@ -78,5 +86,14 @@ contract FantomRandomContractCandy is RandomContractCandy {
     0x121a143066e0f2f08b620784af77cccb35c6242460b4a8ee251b4b416abaebd4,
     _password
   ) {}
+
+  function fulfillRandomWords(
+    uint256 _requestId,
+    uint256[] memory _randomWords
+  ) virtual internal override {
+    emit RequestEnded(_requestId, _randomWords[0]);
+    //Receiver receiver = Receiver(receivers[requestId]);
+    //receiver.receivedNumber(requestId, _randomWords[0]);
+  }
 
 }

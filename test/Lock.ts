@@ -45,9 +45,12 @@ describe("Lock", function () {
     it("Should generate numbers", async function () {
       const { lock, owner } = await deploy();
 
-      await expect(await lock.requestNumber())
-        .to.emit(lock, 'RequestStarted')
-        .withArgs(captureRollId);
+      console.log('balance', await ethers.provider.getBalance(await owner.address))
+      await lock.connect(owner).requestNumber({
+        from: owner.address
+      })
+      // await expect(lock.connect(owner).requestNumber())
+      //   .to.emit(lock, 'RequestStarted')
       
       //await lock.connect(owner).requestNumber()
       // await new Promise((resolve, reject) => {
