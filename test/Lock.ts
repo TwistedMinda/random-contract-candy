@@ -39,13 +39,8 @@ describe("Lock", function () {
       const { lock, owner } = await deploy();
       const addr = await lock.getAddress()
 
-      try {
-        const promise = lock.connect(owner).requestNumber()
-        expect(promise).to.emit(lock, 'RequestStarted')
-        console.log('🚀 Number found: ', await promise);
-      } catch (err) {
-        console.log(err)
-      }
+      const promise = lock.connect(owner).requestNumber()
+      expect(promise).to.emit(lock, 'RequestStarted')
     });
   });
 });
