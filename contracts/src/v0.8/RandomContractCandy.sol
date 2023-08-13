@@ -6,7 +6,7 @@ import "@chainlink/contracts/src/v0.8/ConfirmedOwner.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";
 
 interface Receiver {
-	function receivedNumber(uint _resultId, uint _number) public {}
+	function receivedNumber(uint _resultId, uint _number) external;
 }
 
 abstract contract RandomContractCandy is VRFConsumerBaseV2, ConfirmedOwner {
@@ -43,6 +43,7 @@ abstract contract RandomContractCandy is VRFConsumerBaseV2, ConfirmedOwner {
       numWords
     );
     emit RequestStarted(requestId);
+    receivers[requestId] = msg.sender;
     return requestId;
   }
 
@@ -51,8 +52,8 @@ abstract contract RandomContractCandy is VRFConsumerBaseV2, ConfirmedOwner {
     uint256[] memory _randomWords
   ) virtual internal override {
     emit RequestEnded(_requestId, _randomWords[0]);
-    //Receiver receiver = Receiver(receivers[_requestId]);
-    //receiver.receivedNumber(_requestId, _randomWords[0]);
+    Receiver receiver = Receiver(receivers[_requestId]);
+    receiver.receivedNumber(_requestId, _randomWords[0]);
   }
 }
 

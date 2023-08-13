@@ -22,8 +22,18 @@ describe("Lock", function () {
     const [owner, otherAccount] = await ethers.getSigners()
     const config = networkConfig.sepolia
 
+    // Randomizer (Me)
+    console.log('⚙️A"');
+    const Randomizer = await ethers.getContractFactory("SepoliaRandomContractCandy");
+    console.log('⚙️ B"');
+    const randomizer = await Randomizer.deploy("hello")
+    console.log('⚙️ Deploying "Randomizer"');
+    await randomizer.waitForDeployment()
+    console.log('🚀 Deployed "Randomizer": ', await randomizer.getAddress());
+
+    // Lock (Customer)
     const Lock = await ethers.getContractFactory("Lock");
-    const lock = await Lock.deploy("hello")
+    const lock = await Lock.deploy(randomizer)
     console.log('⚙️ Deploying "Lock"');
     await lock.waitForDeployment()
     console.log('🚀 Deployed "Lock": ', await lock.getAddress());
@@ -34,10 +44,10 @@ describe("Lock", function () {
       VRF_COORDINATOR_ABI,
       owner
     );
-    await coordinator.addConsumer(config.subscriptionId, await lock.getAddress());
-    console.log('🚀 Added Consumer "Lock"');
+    await coordinator.addConsumer(config.subscriptionId, await randomizer.getAddress());
+    console.log('🚀 Added Consumer "Randomizer"');
    
-    return { lock, coordinator, owner, otherAccount };
+    return { lock, randomizer, coordinator, owner, otherAccount };
   }
 
   let rollId: number = 0
@@ -49,16 +59,16 @@ describe("Lock", function () {
 
   describe("Deployment", function () {
     it("Should generate numbers", async function () {
-      const { lock, owner, coordinator } = await deploy();
+      const { lock, owner, randomizer } = await deploy();
 
       const txSend = await request(lock, owner)
       await expect(txSend.wait())
-        .to.emit(lock, "RequestStarted")
+        .to.emit(lock, "RequestedNumber")
         .withArgs(captureRollId)
 
       await new Promise(async (resolve, reject) => {
         lock.once(
-          'RequestEnded',
+          'ReceivedNumber',
           async (id, res) => {
             try {
               console.log('result', id, res)

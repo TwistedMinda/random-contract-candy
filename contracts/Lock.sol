@@ -4,16 +4,23 @@ pragma solidity ^0.8.19;
 import "./src/v0.8/RandomContractCandy.sol";
 import "hardhat/console.sol";
 
-contract Lock is SepoliaRandomContractCandy {
-    
-    constructor(string memory _password) SepoliaRandomContractCandy(_password) {}
+contract Lock is Receiver {
+    event RequestedNumber(uint _resultId);
+    event ReceivedNumber(uint _resultId, uint _number);
+    SepoliaRandomContractCandy randomizer;
 
-    function fulfillRandomWords(
-        uint _requestId,
-        uint256[] memory _randomWords
-    ) virtual internal override {
-        uint res = (_randomWords[0] % 6) + 1;
-        console.log("receivedNumber", _requestId, res);
-        emit RequestEnded(_requestId, res);
+    constructor(SepoliaRandomContractCandy _randomizer) {
+        randomizer = _randomizer;
+    }
+
+    function requestNumber() public returns (uint) {
+        uint id = randomizer.requestNumber();
+        emit RequestedNumber(id);
+        return id;
+    }
+
+    function receivedNumber(uint _resultId, uint _number) public {
+        emit ReceivedNumber(_resultId, _number);
+        console.log("Received number: ", _resultId, _number);
     }
 }
