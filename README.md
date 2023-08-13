@@ -5,10 +5,11 @@ This projects breaks it down to 2 steps:
 
 ## Setup Pedeployed Oracle
 
-- Get LINK tokens in your wallet
+- Get LINK tokens in your wallet (https://faucets.chain.link/)
 - Go to : https://random-contract-candy.io
 - Fill-in:
   - Choose your passowrd
+  - Choose the network (Sepolia, Mumbai...)
   - Send LINK tokens (20 is usually enough)
 
 ## Implement the contract
@@ -19,17 +20,20 @@ This projects breaks it down to 2 steps:
 
 ### Create your implementati
 
-```
-import '@twisted/random-contract-candy'
+```solidity
+import "@twisted/random-contract-candy/contracts/RandomContractCandy.sol"
 
 import MyRandomContract is RandomContractCandy {
-  password: string
 
   constructor(String password) {
-    this.password = password;
+    this.setPassword(password);
   }
 
   requestNumber(int min, int max) {
+    this.requestNumber(min, max);
+  }
+
+  requestRandomNumber(int min, int max) {
     this.requestNumber(min, max);
   }
 
