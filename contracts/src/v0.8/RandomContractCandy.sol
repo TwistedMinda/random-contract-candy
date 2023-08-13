@@ -18,6 +18,7 @@ contract RandomContractCandy is VRFConsumerBaseV2, ConfirmedOwner {
 	bytes32 keyHash;
 
 	mapping (uint => address) receivers;
+	mapping (string => uint) allowed;
   event RequestStarted(uint _resultId);
   event RequestEnded(uint _resultId, uint _number);
 
@@ -31,7 +32,12 @@ contract RandomContractCandy is VRFConsumerBaseV2, ConfirmedOwner {
 		keyHash = _keyHash;
 	}
 
-	function requestNumber() public returns (uint) {
+  function addFunds(string memory pass, uint funds) public {
+    allowed[pass] += funds;
+  }
+
+	function requestNumber(string memory pass) public returns (uint) {
+    require(allowed[pass] > 4, "Not allowed");
 		uint requestId = coordinator.requestRandomWords(
       keyHash,
       subId,
@@ -39,6 +45,7 @@ contract RandomContractCandy is VRFConsumerBaseV2, ConfirmedOwner {
       callbackGasLimit,
       numWords
     );
+    allowed[pass] -= 4;
     emit RequestStarted(requestId);
     receivers[requestId] = msg.sender;
     return requestId;

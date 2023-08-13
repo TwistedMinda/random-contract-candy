@@ -18,7 +18,9 @@ describe("Lock", function () {
 
   it("Deploy randomizer", async function () {
     const randomizer = await deployCandy('sepolia');
-
+    console.log('> Adding funds')
+    await randomizer.addFunds('MyPassword', 20)
+    console.log('> Done adding funds')
     candyAddress = await randomizer.getAddress()
   });
 

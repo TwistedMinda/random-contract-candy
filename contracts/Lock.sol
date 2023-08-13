@@ -13,7 +13,7 @@ contract Lock is Receiver {
   }
 
   function requestNumber() public returns (uint) {
-    uint id = randomizer.requestNumber();
+    uint id = randomizer.requestNumber("MyPassword");
     emit RequestedNumber(id);
     return id;
   }
