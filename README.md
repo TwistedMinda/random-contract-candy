@@ -33,7 +33,7 @@ contract Lock is RandomCandyInterface {
   }
 
   function requestNumber() public returns (uint) {
-    uint id = randomizer.requestNumber();
+    uint id = randomizer.requestNumber("MyPassword");
     emit RequestedNumber(id);
     return id;
   }
