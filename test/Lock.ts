@@ -36,12 +36,13 @@ describe("Lock", function () {
 
   describe("Deployment", function () {
     it("Should generate numbers", async function () {
-      const { lock } = await deploy();
+      const { lock, owner } = await deploy();
       const addr = await lock.getAddress()
 
       try {
-        const res = await lock.requestNumber()
-        console.log('🚀 Number found: ', res);
+        const promise = lock.connect(owner).requestNumber()
+        expect(promise).to.emit(lock, 'RequestStarted')
+        console.log('🚀 Number found: ', await promise);
       } catch (err) {
         console.log(err)
       }

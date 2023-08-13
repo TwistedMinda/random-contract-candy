@@ -21,6 +21,8 @@ abstract contract RandomContractCandy is VRFConsumerBaseV2, ConfirmedOwner {
   string password;
 
 	mapping (uint => address) receivers;
+  event RequestStarted(uint _resultId);
+  event RequestEnded(uint _resultId, uint _number);
 
 	constructor(
 		uint64 _subId,
@@ -42,13 +44,15 @@ abstract contract RandomContractCandy is VRFConsumerBaseV2, ConfirmedOwner {
       callbackGasLimit,
       numWords
     );
+    emit RequestStarted(requestId);
     return requestId;
   }
 
   function fulfillRandomWords(
-    uint256 requestId,
+    uint256 _requestId,
     uint256[] memory _randomWords
   ) virtual internal override {
+    emit RequestEnded(_requestId, _randomWords[0]);
     //Receiver receiver = Receiver(receivers[requestId]);
     //receiver.receivedNumber(requestId, _randomWords[0]);
   }
@@ -63,14 +67,6 @@ contract SepoliaRandomContractCandy is RandomContractCandy {
     _password
   ) {}
 
-  function fulfillRandomWords(
-    uint256 requestId,
-    uint256[] memory _randomWords
-  ) virtual internal override {
-    uint res = (_randomWords[0] % 6) + 1;
-    console.log("receivedNumber", requestId, res);
-  }
-  
 }
 
 contract FantomRandomContractCandy is RandomContractCandy {
@@ -82,12 +78,4 @@ contract FantomRandomContractCandy is RandomContractCandy {
     _password
   ) {}
 
-  function fulfillRandomWords(
-    uint256 requestId,
-    uint256[] memory _randomWords
-  ) virtual internal override {
-    uint res = (_randomWords[0] % 6) + 1;
-    console.log("receivedNumber", requestId, res);
-  }
-  
 }

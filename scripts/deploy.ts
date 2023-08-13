@@ -20,13 +20,6 @@ async function main() {
   );
   await coordinator.addConsumer(config.subscriptionId, await lock.getAddress());
   console.log('🚀 Added Consumer "Lock"');
-
-  try {
-    const res = await lock.requestNumber()
-    console.log('🚀 Number found: ', res);
-  } catch (err) {
-    console.log(err)
-  }
 }
 
 /*
