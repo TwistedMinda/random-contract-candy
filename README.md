@@ -14,7 +14,8 @@ This projects breaks it down to 2 steps:
 ## Implement the contract
 
 ### Install the contract
-`npm install @twisted/random-contract-candy`
+
+`yarn add @twisted/random-contract-candy`
 
 ### Create your implementati
 
@@ -46,3 +47,5 @@ task('deploy', 'Deployment', () => {
   MyRandomContract('PasswordYouHadChosen')
 })
 ```
+
+Note: Of course, use Environment Variables instead of clear text
