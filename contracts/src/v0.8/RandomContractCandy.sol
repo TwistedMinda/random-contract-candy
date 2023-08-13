@@ -16,7 +16,6 @@ contract RandomContractCandy is VRFConsumerBaseV2, ConfirmedOwner {
   uint32 numWords = 1;
 	uint64 subId;
 	bytes32 keyHash;
-  string password;
 
 	mapping (uint => address) receivers;
   event RequestStarted(uint _resultId);
@@ -25,13 +24,11 @@ contract RandomContractCandy is VRFConsumerBaseV2, ConfirmedOwner {
 	constructor(
 		uint64 _subId,
 		address coordinatorAddr,
-		bytes32 _keyHash,
-    string memory _password
+		bytes32 _keyHash
   ) VRFConsumerBaseV2(coordinatorAddr) ConfirmedOwner(msg.sender) {
 		coordinator = VRFCoordinatorV2Interface(coordinatorAddr);
 		subId = _subId;
 		keyHash = _keyHash;
-    password = _password;
 	}
 
 	function requestNumber() public returns (uint) {

@@ -20,8 +20,7 @@ export const createCandy = async (type: ConfigKey) => {
   return await Randomizer.deploy(
     config.candy.subscriptionId,
     config.chainlink.vrfCoordinator,
-    config.chainlink.keyHash,
-    "hello"
+    config.chainlink.keyHash
   )
 }
 
