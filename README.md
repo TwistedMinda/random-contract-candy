@@ -18,30 +18,46 @@ This projects breaks it down to 2 steps:
 
 `yarn add @twisted/random-contract-candy`
 
-### Create your implementati
+### Use the candy in your contracts
 
 ```solidity
-import "@twisted/random-contract-candy/contracts/RandomContractCandy.sol"
+import "@twisted/random-contract-candy/src/v0.8/RandomContractCandy.sol";
 
-import MyConsumer is Receiver {
+contract Lock is Receiver {
+  event RequestedNumber(uint _resultId);
+  event ReceivedNumber(uint _resultId, uint _number);
+  RandomContractCandy randomizer;
 
-  requestNumber(int _min_, int max) {
-    this.requestNumber(min, max);
+  constructor(RandomContractCandy _randomizer) {
+    randomizer = _randomizer;
   }
 
-  onNumberReceived(int received) {
-    log('yahoo', received)
+  function requestNumber() public returns (uint) {
+    uint id = randomizer.requestNumber();
+    emit RequestedNumber(id);
+    return id;
+  }
+
+  function receivedNumber(uint _resultId, uint _number) public {
+    emit ReceivedNumber(_resultId, _number);
   }
 }
-
 ```
 
-### Deploy the contract 
+### Deploy your contract
+
+Supported networks: `sepolia`
 
 ```ts
-task('deploy', 'Deployment', () => {
-  const = new MyConsumer('PasswordYouHadChosen')
-})
-```
+async function main () {
+  const [owner] = await ethers.getSigners()
 
-Note: Of course, use Environment Variables instead of clear text
+  // Retrieve existing Randomizer
+  const randomizer = getCandyContract('sepolia', owner)
+
+  // Your contract
+  const Contract = await ethers.getContractFactory("Contract")
+  const contract = await Contract.deploy(randomizer)
+  await contract.waitForDeployment()
+}
+```
