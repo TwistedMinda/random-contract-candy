@@ -4,6 +4,7 @@ pragma solidity ^0.8.19;
 import "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol";
 import "@chainlink/contracts/src/v0.8/ConfirmedOwner.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";
+import "@chainlink/contracts/src/v0.8/interfaces/LinkTokenInterface.sol";
 
 interface RandomCandyInterface {
 	function receivedNumber(uint _resultId, uint _number) external;
@@ -16,9 +17,11 @@ contract RandomCandyContract is VRFConsumerBaseV2, ConfirmedOwner {
   uint32 numWords = 1;
 	uint64 subId;
 	bytes32 keyHash;
+  LinkTokenInterface LINK;
+  address linkAddress = 0x779877A7B0D9E8603169DdbD7836e478b4624789;
 
 	mapping (uint => address) receivers;
-	mapping (string => uint) allowed;
+	mapping (address => uint) allowed;
   event RequestStarted(uint _resultId);
   event RequestEnded(uint _resultId, uint _number);
 
@@ -30,14 +33,23 @@ contract RandomCandyContract is VRFConsumerBaseV2, ConfirmedOwner {
 		coordinator = VRFCoordinatorV2Interface(coordinatorAddr);
 		subId = _subId;
 		keyHash = _keyHash;
+    LINK = LinkTokenInterface(linkAddress);
 	}
 
-  function addFunds(string memory pass, uint funds) public {
-    allowed[pass] += funds;
+  function addFunds(uint256 amount) external {
+    require(amount >= (0.02 * 1 ether), "Send a minimum of 0.02 LINK");
+    require(LINK.allowance(msg.sender, address(this)) >= amount, "Contract not allowed to transfer enough tokens");
+    LINK.transferFrom(msg.sender, address(this), amount);
+    LINK.transferAndCall(
+      address(coordinator),
+      amount,
+      abi.encode(subId)
+    );
+    allowed[tx.origin] += amount;
   }
 
-	function requestNumber(string memory pass) public returns (uint) {
-    require(allowed[pass] > 4, "Not allowed");
+	function requestNumber() public returns (uint) {
+    require(allowed[tx.origin] >= 1, "Not allowed");
 		uint requestId = coordinator.requestRandomWords(
       keyHash,
       subId,
@@ -45,7 +57,7 @@ contract RandomCandyContract is VRFConsumerBaseV2, ConfirmedOwner {
       callbackGasLimit,
       numWords
     );
-    allowed[pass] -= 4;
+    allowed[tx.origin] -= 1;
     emit RequestStarted(requestId);
     receivers[requestId] = msg.sender;
     return requestId;

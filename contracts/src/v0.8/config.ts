@@ -2,7 +2,7 @@ const configs = {
   sepolia: {
     candy: {
       address: '0xD3E477bCDFc452Ac519c0dEAA83Bb8311efcb034',
-      subscriptionId: 4472,
+      subscriptionId: 4522,
     },
     chainlink: {
       vrfCoordinator: '0x8103B0A8A00be2DDC778e6e7eaa21791Cd364625',
