@@ -1,6 +1,6 @@
-### Introduction
+## Chainlink VRF Abstraction -- Shared Oracle
 
-Chainlink VRF Abstraction -- Shared Oracle
+### Introduction
 
 Simplified chainlink's random numbers generation:
 
