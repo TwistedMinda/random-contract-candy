@@ -12,6 +12,17 @@ const configs = {
   }
 }
 export type ConfigKey = keyof typeof configs
-export type Config = typeof configs[ConfigKey]
+
+export type SupportedCandyChain = 'sepolia'
+export interface CandyContractConfig {
+  chain: SupportedCandyChain
+  mock?: boolean
+  chainlink?: {
+    subscriptionId: string
+    keyHash: string
+    linkToken: string
+    vrfCoordinator: string
+  }
+}
 
 export default configs

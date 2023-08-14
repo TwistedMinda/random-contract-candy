@@ -1,7 +1,7 @@
 
 import { HardhatEthersSigner } from "@nomicfoundation/hardhat-ethers/signers";
 
-import configs, { ConfigKey } from './config'
+import configs, { CandyContractConfig, ConfigKey } from './config'
 import { getCandy } from "./internal";
 import { RandomCandyContract } from "../../../typechain-types";
 import { ethers } from "hardhat";
@@ -12,7 +12,7 @@ export const getCandyContract = (type: ConfigKey, owner: HardhatEthersSigner) =>
   getCandy(configs[type]?.candy?.address ?? '', owner)
 
 export const fundCandyContract = async (
-  type: ConfigKey,
+  config: CandyContractConfig,
   target: RandomCandyContract, 
   amount: number,
   whitelistedAddress: string
@@ -20,10 +20,11 @@ export const fundCandyContract = async (
   const [owner] = await ethers.getSigners();
   
   console.log('> Funding candy...')
-  
-  const linkAddress = configs[type]?.chainlink?.linkToken;
+
+  const chain = config.chain;
+  const linkAddress = config?.chainlink?.linkToken ?? configs[chain]?.chainlink?.linkToken;
   if (!linkAddress)
-    throw new Error('No link token address found for ' + type)
+    throw new Error('No link token address found for ' + chain)
 
   const linkToken = new ethers.Contract(linkAddress, LINK_TOKEN_ABI, owner);
   const decimals = await linkToken.decimals();

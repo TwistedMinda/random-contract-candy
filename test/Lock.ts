@@ -6,6 +6,11 @@ import { deployCandy, deployConsumer } from "../artifacts/contracts/src/tools";
 
 import { RandomCandyContract } from "../typechain-types";
 import { fundCandyContract } from "../contracts/src/v0.8/getter";
+import { CandyContractConfig } from "../contracts/src/v0.8/config";
+
+const config: CandyContractConfig = {
+  chain: 'sepolia'
+}
 
 describe("Lock", function () {
   let rollId: number = 0
@@ -19,7 +24,7 @@ describe("Lock", function () {
   let candyAddress = ''
 
   it("Deploy randomizer", async function () {
-    const _randomizer = await deployCandy('sepolia');
+    const _randomizer = await deployCandy(config.chain);
     candyAddress = await _randomizer.getAddress()
     randomizer = _randomizer
   });
@@ -31,7 +36,7 @@ describe("Lock", function () {
     
     try {
       await fundCandyContract(
-        'sepolia',
+        config,
         randomizer,
         0.5,
         await lock.getAddress()
