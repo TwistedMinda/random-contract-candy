@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "deploy:sepolia": "npx hardhat run scripts/deploy.ts --network sepolia",
+    "abi": "npx hardhat run scripts/extract-abi.ts",
+    "test:sepolia": "npx hardhat test --network sepolia"
+  },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.0",
     "@nomicfoundation/hardhat-ethers": "^3.0.0",

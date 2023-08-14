@@ -4,7 +4,7 @@ import path from 'path';
 export const extractABI = (name: string, destiation?: string) => {
   const dir = path.resolve(
     __dirname,
-    `../artifacts/contracts/${name}.sol/${name}.json`
+    `../artifacts/contracts/src/v0.8/${name}.sol/${name}.json`
   );
   const file = fs.readFileSync(dir, 'utf8');
   const json = JSON.parse(file);
