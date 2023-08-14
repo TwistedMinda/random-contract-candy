@@ -5,7 +5,6 @@ import configs, { ConfigKey } from './config'
 import { getCandy } from "./internal";
 import { RandomCandyContract } from "../../../typechain-types";
 import { ethers } from "hardhat";
-import { Contract } from "ethers";
 
 import LINK_TOKEN_ABI from '@chainlink/contracts/abi/v0.8/LinkTokenInterface.json';
 

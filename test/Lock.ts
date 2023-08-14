@@ -2,11 +2,8 @@ import {
   loadFixture,
 } from "@nomicfoundation/hardhat-toolbox/network-helpers" 
 import { expect } from "chai";
-import { ethers, network } from "hardhat";
-import { HardhatEthersSigner } from "@nomicfoundation/hardhat-ethers/signers";
 import { deployCandy, deployConsumer } from "../artifacts/contracts/src/tools";
 
-import LINK_TOKEN_ABI from '@chainlink/contracts/abi/v0.8/LinkTokenInterface.json';
 import { RandomCandyContract } from "../typechain-types";
 import { fundCandyContract } from "../contracts/src/v0.8/getter";
 
