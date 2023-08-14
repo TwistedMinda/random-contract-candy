@@ -37,7 +37,6 @@ contract RandomCandyContract is VRFConsumerBaseV2, ConfirmedOwner {
   }
 
   function addFunds(uint256 amount, address forContract) external {
-    require(amount >= (0.02 * 1 ether), "Send a minimum of 0.02 LINK");
     require(LINK.allowance(msg.sender, address(this)) >= amount, "Contract not allowed to transfer enough tokens");
     LINK.transferFrom(msg.sender, address(this), amount);
     LINK.transferAndCall(
