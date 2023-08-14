@@ -38,7 +38,7 @@ describe("Lock", function () {
       0.02,
       await lock.getAddress()
     )
-
+    
     const generateNumberTransaction = await lock.requestNumber()
     await expect(generateNumberTransaction.wait())
       .to.emit(lock, "RequestedNumber")

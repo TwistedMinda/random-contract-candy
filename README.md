@@ -92,7 +92,8 @@ Don't forget to test your contract:
 it("Generate number", async function () {
   const contract = await deployContract()
   
-  // Request a random number
+  // Request a random number 
+  // ...each call will cost a fix 0.5 LINK
   const tx = await contract.requestNumber()
 
   // Verify "RequestedNumber" was emitted
