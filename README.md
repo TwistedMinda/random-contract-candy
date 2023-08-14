@@ -50,7 +50,10 @@ This is the big step:
 Supported networks: `sepolia`
 
 ```ts
-import { getCandyContract } from '@twisted/random-contract-candy/src/v0.8/getter'
+import {
+  getCandyContract,
+  fundCandyContract
+} from '@twisted/random-contract-candy/src/v0.8/getter'
 
 const network = 'sepolia'
 
