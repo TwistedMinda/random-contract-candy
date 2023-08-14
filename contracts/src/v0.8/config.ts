@@ -12,5 +12,6 @@ const configs = {
   }
 }
 export type ConfigKey = keyof typeof configs
+export type Config = typeof configs[ConfigKey]
 
 export default configs

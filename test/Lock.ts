@@ -32,12 +32,16 @@ describe("Lock", function () {
       return;
     const lock = await deployConsumer(candyAddress)
     
-    await fundCandyContract(
-      'sepolia',
-      randomizer,
-      0.02,
-      await lock.getAddress()
-    )
+    try {
+      await fundCandyContract(
+        'sepolia',
+        randomizer,
+        0.5,
+        await lock.getAddress()
+      )
+    } catch (err) {
+      console.log('❌ Failed to fund')
+    }
     
     const generateNumberTransaction = await lock.requestNumber()
     await expect(generateNumberTransaction.wait())
