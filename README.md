@@ -1,18 +1,13 @@
 ### Introduction
 
-We've been there, we need to prototype some project for fun, and there we go, we need to setup a Chainlink VRF oracle.
-This projects breaks it down to 2 steps:
+Chainlink VRF Abstraction -- Shared Oracle
 
-# Step 1: Feed the Shared Oracle
+Simplified chainlink's random numbers generation:
 
-- Get LINK tokens in your wallet (https://faucets.chain.link/)
-- Go to : https://random-contract-candy.io
-- Fill-in:
-  - Choose your passowrd
-  - Choose the network (Sepolia, Mumbai...)
-  - Send LINK tokens (20 is usually enough)
-
-# Step 2: Implement the candy contract
+- 🤑 Get LINK tokens in your wallet (https://faucets.chain.link/) 
+- 🎯 Retrieve the existing Shared Oracle
+- 💰 Fund it & Authorize your own contract
+- 🚀 You're all set
 
 ### Install the contract
 
@@ -23,7 +18,7 @@ This projects breaks it down to 2 steps:
 ```solidity
 import "@twisted/random-contract-candy/src/v0.8/RandomCandyContract.sol";
 
-contract Lock is RandomCandyInterface {
+contract Example is RandomCandyInterface {
   event RequestedNumber(uint _resultId);
   event ReceivedNumber(uint _resultId, uint _number);
   RandomCandyContract randomizer;
@@ -47,6 +42,11 @@ contract Lock is RandomCandyInterface {
 
 ### Deploy your contract
 
+This is the big step:
+- Call `getCandyContract` to retrieve the Shared Oracle.
+- Deploy your contract and attach the Shared Oracle
+- (optional) Call `fundCandyContract` to fund the Shared Oracle & authorize your contract
+
 Supported networks: `sepolia`
 
 ```ts
@@ -58,17 +58,17 @@ const deployContract = async () => {
   const [owner] = await ethers.getSigners()
 
   // Retrieve existing Randomizer
-  const randomizer = getCandyContract(network, owner)
+  const candy = getCandyContract(network, owner)
 
   // Deploy your contract
-  const Contract = await ethers.getContractFactory("Contract")
-  const contract = await Contract.deploy(randomizer)
+  const Example = await ethers.getContractFactory("Example")
+  const contract = await Example.deploy(candy)
   await contract.waitForDeployment()
 
   // Your wallet must have at least 1 LINK
   await fundCandyContract(
     network,
-    randomizer,
+    candy,
     1,
     await contract.getAddress() // Authorized to use the funds
   )
@@ -82,6 +82,8 @@ async function main () {
 ```
 
 ### Test your contract
+
+Don't forget to test your contract:
 
 ```ts
 it("Generate number", async function () {
