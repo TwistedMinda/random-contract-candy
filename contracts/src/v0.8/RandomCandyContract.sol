@@ -45,11 +45,11 @@ contract RandomCandyContract is VRFConsumerBaseV2, ConfirmedOwner {
       amount,
       abi.encode(subId)
     );
-    allowed[msg.sender] += amount;
+    allowed[tx.origin] += amount;
   }
 
 	function requestNumber() public returns (uint) {
-    require(allowed[msg.sender] >= 1, "Not allowed");
+    require(allowed[tx.origin] >= 1, "Not allowed");
 		uint requestId = coordinator.requestRandomWords(
       keyHash,
       subId,
@@ -57,7 +57,7 @@ contract RandomCandyContract is VRFConsumerBaseV2, ConfirmedOwner {
       callbackGasLimit,
       numWords
     );
-    allowed[msg.sender] -= 1;
+    allowed[tx.origin] -= 1;
     emit RequestStarted(requestId);
     receivers[requestId] = msg.sender;
     return requestId;
