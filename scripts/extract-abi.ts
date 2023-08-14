@@ -6,6 +6,7 @@ export const extractABI = (name: string, destiation?: string) => {
     __dirname,
     `../artifacts/contracts/src/v0.8/${name}.sol/${name}.json`
   );
+  console.log('dir')
   const file = fs.readFileSync(dir, 'utf8');
   const json = JSON.parse(file);
   const abi = JSON.stringify(json.abi);
@@ -23,4 +24,4 @@ export const CONTRACT_INTERFACE = (
   }
 };
 
-extractABI('Lock', process.env.ABI_EXTRACT_DESTINATION);
+extractABI('RandomCandyContract', process.env.ABI_EXTRACT_DESTINATION);
