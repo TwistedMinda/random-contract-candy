@@ -12,7 +12,7 @@ interface RandomCandyInterface {
 
 contract RandomCandyContract is VRFConsumerBaseV2, ConfirmedOwner {
   VRFCoordinatorV2Interface coordinator;
-  uint32 public callbackGasLimit = 10000000;
+  uint32 public callbackGasLimit = 2500000;
   uint16 requestConfirmations = 3;
   uint32 numWords = 1;
   uint64 subId;
@@ -22,7 +22,6 @@ contract RandomCandyContract is VRFConsumerBaseV2, ConfirmedOwner {
 
   mapping (uint => address) receivers;
   mapping (address => uint) balances;
-  mapping (address => address) owners;
   event RequestStarted(uint _resultId);
   event RequestEnded(uint _resultId, uint _number);
 
@@ -46,13 +45,11 @@ contract RandomCandyContract is VRFConsumerBaseV2, ConfirmedOwner {
       amount,
       abi.encode(subId)
     );
-    owners[forContract] = msg.sender;
-    balances[msg.sender] += amount;
+    balances[forContract] += amount;
   }
 
   function requestNumber() public returns (uint) {
-    address owner = owners[msg.sender];
-    require(balances[owner] >= 1, "Not allowed");
+    require(balances[msg.sender] >= 1, "Not allowed");
     uint requestId = coordinator.requestRandomWords(
       keyHash,
       subId,
@@ -60,9 +57,9 @@ contract RandomCandyContract is VRFConsumerBaseV2, ConfirmedOwner {
       callbackGasLimit,
       numWords
     );
-    balances[owner] -= 1;
+    balances[msg.sender] -= 1;
     emit RequestStarted(requestId);
-    receivers[requestId] = owner;
+    receivers[requestId] = msg.sender;
     return requestId;
   }
 

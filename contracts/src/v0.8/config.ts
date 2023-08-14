@@ -2,7 +2,7 @@ const configs = {
   sepolia: {
     candy: {
       address: '0xD3E477bCDFc452Ac519c0dEAA83Bb8311efcb034',
-      subscriptionId: 4522,
+      subscriptionId: 4524,
     },
     chainlink: {
       linkToken: '0x779877A7B0D9E8603169DdbD7836e478b4624789',
