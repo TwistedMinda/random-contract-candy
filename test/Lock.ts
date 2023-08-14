@@ -44,14 +44,11 @@ describe("Lock", function () {
       .to.emit(lock, "RequestedNumber")
       .withArgs(captureRollId)
     
-    await new Promise(async (resolve, reject) => {
-      lock.once(
-        'ReceivedNumber',
-        async (id, res) => {
-          console.log('result', id, res)
-          resolve(true)
-        }
-      )
+    await new Promise(async (resolve) => {
+      lock.once('ReceivedNumber', async (id, res) => {
+        console.log('result', id, res)
+        resolve(true)
+      })
     })
   })
 })

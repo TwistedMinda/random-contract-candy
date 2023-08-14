@@ -102,14 +102,11 @@ it("Generate number", async function () {
 
   // Wait for "ReceivedNumber" to be emitted
   // ...care about timeout (eg. need more than 100 seconds on Sepolia)
-  await new Promise(async (resolve, reject) => {
-    contract.once(
-      'ReceivedNumber',
-      async (id, res) => {
-        console.log('result', id, res)
-        resolve(true)
-      }
-    )
+  await new Promise(async (resolve) => {
+    contract.once('ReceivedNumber', async (id, res) => {
+      console.log('result', id, res)
+      resolve(true)
+    })
   })
 })
 ```
