@@ -33,13 +33,14 @@ contract Lock is RandomCandyInterface {
   }
 
   function requestNumber() public returns (uint) {
-    uint id = randomizer.requestNumber("MyPassword");
+    uint id = randomizer.requestNumber();
     emit RequestedNumber(id);
     return id;
   }
 
   function receivedNumber(uint _resultId, uint _number) public {
-    emit ReceivedNumber(_resultId, _number);
+    uint dice = (_number % 6) + 1; // Reduce as dice value (1 to 6)
+    emit ReceivedNumber(_resultId, dice);
   }
 }
 ```
@@ -51,16 +52,27 @@ Supported networks: `sepolia`
 ```ts
 import { getCandyContract } from '@twisted/random-contract-candy/src/v0.8/getter'
 
+const network = 'sepolia'
+
 const deployContract = async () => {
   const [owner] = await ethers.getSigners()
 
   // Retrieve existing Randomizer
-  const randomizer = getCandyContract('sepolia', owner)
+  const randomizer = getCandyContract(network, owner)
 
   // Deploy your contract
   const Contract = await ethers.getContractFactory("Contract")
   const contract = await Contract.deploy(randomizer)
   await contract.waitForDeployment()
+
+  // Your wallet must have at least 1 LINK
+  await fundCandyContract(
+    network,
+    randomizer,
+    1,
+    await contract.getAddress() // Authorized to use the funds
+  )
+  
   return contract
 }
 

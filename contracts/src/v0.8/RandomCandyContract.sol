@@ -12,7 +12,7 @@ interface RandomCandyInterface {
 
 contract RandomCandyContract is VRFConsumerBaseV2, ConfirmedOwner {
   VRFCoordinatorV2Interface coordinator;
-  uint32 public callbackGasLimit = 100000;
+  uint32 public callbackGasLimit = 1000000;
   uint16 requestConfirmations = 3;
   uint32 numWords = 1;
 	uint64 subId;
@@ -21,7 +21,8 @@ contract RandomCandyContract is VRFConsumerBaseV2, ConfirmedOwner {
   address linkAddress = 0x779877A7B0D9E8603169DdbD7836e478b4624789;
 
 	mapping (uint => address) receivers;
-	mapping (address => uint) allowed;
+	mapping (address => uint) balances;
+	mapping (address => address) owners;
   event RequestStarted(uint _resultId);
   event RequestEnded(uint _resultId, uint _number);
 
@@ -36,7 +37,7 @@ contract RandomCandyContract is VRFConsumerBaseV2, ConfirmedOwner {
     LINK = LinkTokenInterface(linkAddress);
 	}
 
-  function addFunds(uint256 amount) external {
+  function addFunds(uint256 amount, address forContract) external {
     require(amount >= (0.02 * 1 ether), "Send a minimum of 0.02 LINK");
     require(LINK.allowance(msg.sender, address(this)) >= amount, "Contract not allowed to transfer enough tokens");
     LINK.transferFrom(msg.sender, address(this), amount);
@@ -45,11 +46,13 @@ contract RandomCandyContract is VRFConsumerBaseV2, ConfirmedOwner {
       amount,
       abi.encode(subId)
     );
-    allowed[tx.origin] += amount;
+    owners[forContract] = msg.sender;
+    balances[msg.sender] += amount;
   }
 
 	function requestNumber() public returns (uint) {
-    require(allowed[tx.origin] >= 1, "Not allowed");
+    address owner = owners[msg.sender];
+    require(balances[owner] >= 1, "Not allowed");
 		uint requestId = coordinator.requestRandomWords(
       keyHash,
       subId,
@@ -57,9 +60,9 @@ contract RandomCandyContract is VRFConsumerBaseV2, ConfirmedOwner {
       callbackGasLimit,
       numWords
     );
-    allowed[tx.origin] -= 1;
+    balances[owner] -= 1;
     emit RequestStarted(requestId);
-    receivers[requestId] = msg.sender;
+    receivers[requestId] = owner;
     return requestId;
   }
 
