@@ -11,8 +11,6 @@ Simplified chainlink's random numbers generation:
 
 ### Install the contract
 
-`yarn add @twisted/random-contract-candy`
-
 ### Use the candy in your contracts
 
 ```solidity
