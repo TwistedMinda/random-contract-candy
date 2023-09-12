@@ -108,3 +108,5 @@ it("Generate number", async function () {
   })
 })
 ```
+
+Disclaimer: Don't use on production
